@@ -1,0 +1,56 @@
+name: Release audit summary
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  summarize:
+    name: Write and upload audit summary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write audit summary markdown
+        run: |
+          mkdir -p audit-output
+          {
+            echo "# Release audit summary — Next.js v14.0.0"
+            echo ""
+            echo "Case study: how the Next.js project (vercel/next.js) shipped version 14.0.0."
+            echo ""
+            echo "## Release"
+            echo ""
+            echo "- **Release name:** v14.0.0"
+            echo "- **Tag:** v14.0.0 (target branch: canary)"
+            echo "- **Published:** 2023-10-26 (tagged 2023-10-26T16:04:56Z by vercel-release-bot)"
+            echo "- **Release page:** https://github.com/vercel/next.js/releases/tag/v14.0.0"
+            echo ""
+            echo "## Highlights from the release notes"
+            echo ""
+            echo "1. **feat: drop Node.js 16 (#56896)** — Next.js 14 raises the minimum Node.js version, dropping Node.js 16 support."
+            echo "2. **chore(next/image)!: mark \`domains\` as deprecated in favor \`remotePatterns\` (#57062)** — the \`images.domains\` config option is deprecated in favor of \`remotePatterns\`."
+            echo "3. **chore(export)!: remove \`next export\` in favor of \`output: export\` in next.config.js (#57085)** — the standalone \`next export\` command is removed in favor of \`output: 'export'\`."
+            echo "4. **Move ImageResponse to \`next/og\` (#56662)** — \`ImageResponse\` moves from \`next/server\` to \`next/og\`, with a codemod to migrate imports (#57074)."
+            echo "5. **cache: add \`unstable_noStore\` API (#56930)** — new opt-out API for per-request caching."
+            echo "6. **Remove the experimental \`serverActions\` flag (#57145)** — Server Actions ship without the experimental flag."
+            echo ""
+            echo "The full release notes contain 150+ core changes, including Partial Prerendering (PPR) support and Turbopack improvements."
+            echo ""
+            echo "## Discussion categories exposed by vercel/next.js"
+            echo ""
+            echo "App Router, Feedback, Help, Ideas, Polls, RFC, Security, Show and tell, Triage, Turbopack Error Report (10 categories)."
+            echo ""
+            echo "## Top community issue (open, most \U+0001F44D reactions)"
+            echo ""
+            echo "- **Issue:** #49279 — [NEXT-1151] App router issue with Framer Motion shared layout animations"
+            echo "- \U+0001F44D reactions: 328"
+            echo "- Link: https://github.com/vercel/next.js/issues/49279"
+          } > audit-output/release-audit-summary.md
+          cat audit-output/release-audit-summary.md
+      - name: Upload audit summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-audit-summary
+          path: audit-output/release-audit-summary.md
+          if-no-files-found: error
