@@ -1,2 +1,3 @@
 # release-audit
-Release audit playbook: how mature open-source projects ship a version. First case study: Next.js v14.0.0 (vercel/next.js).
+
+This is my personal workspace for the release-audit project. It's where I collect inputs, draft findings, and keep track of the overall audit work in one place.
